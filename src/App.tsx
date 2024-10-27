@@ -38,10 +38,10 @@ function App() {
     : null;
 
   return (
-    <Container>
+    <Container className="pb-4">
       <Row className="header-gradient text-center p-3 m-3 mb-0 rounded">
         <Col>
-          <h1 className="h4 mb-0">Amazing Restaurant Finder</h1>
+          <h1 className="h4 mb-0">Discover & Book Restaurants</h1>
         </Col>
       </Row>
       <Row>

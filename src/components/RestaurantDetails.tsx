@@ -1,12 +1,11 @@
 import React from "react";
-import { Card, Container } from "react-bootstrap";
+import { Card, Container, Row, Col } from "react-bootstrap";
 import { Restaurant } from "../types/restaurants";
 
 type RestaurantDetailsProps = {
   restaurant: Restaurant;
 };
 
-// Let's pass the restaurant details directly into this component rather than fetching them from the API based on the selected id prop
 export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   restaurant,
 }) => {
@@ -14,24 +13,47 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
     <Container className="mt-4 fade-in">
       <Card>
         <Card.Body>
-          <Card.Title>{restaurant.name}</Card.Title>
-          <Card.Text>Address: {restaurant.details.address}</Card.Text>
-          <Card.Text>Review Score: {restaurant.rating}</Card.Text>
-          <Card.Text className="d-flex gap-2">
-            <span>Opening hours: </span>
-            <ul className="list-unstyled">
-              <li>Weekday: {restaurant.details.openingHours.weekday}</li>
-              <li>Weekend: {restaurant.details.openingHours.weekend}</li>
-            </ul>
-          </Card.Text>
-          <Card.Text>
-            Contact:{" "}
-            <strong>
-              <a href={`mailto:${restaurant.details.contactEmail}`}>
+          <Card.Title className="mb-4">{restaurant.name}</Card.Title>
+
+          <Row className="mb-2">
+            <Col xs={4} className="text-muted">
+              Address:
+            </Col>
+            <Col xs={8}>{restaurant.details.address}</Col>
+          </Row>
+
+          <Row className="mb-2">
+            <Col xs={4} className="text-muted">
+              Review Score:
+            </Col>
+            <Col xs={8}>{restaurant.rating}</Col>
+          </Row>
+
+          <Row className="mb-2">
+            <Col xs={4} className="text-muted">
+              Opening Hours:
+            </Col>
+            <Col xs={8}>
+              <ul className="list-unstyled mb-0">
+                <li>Weekday: {restaurant.details.openingHours.weekday}</li>
+                <li>Weekend: {restaurant.details.openingHours.weekend}</li>
+              </ul>
+            </Col>
+          </Row>
+
+          <Row className="mb-2">
+            <Col xs={4} className="text-muted">
+              Contact:
+            </Col>
+            <Col xs={8}>
+              <a
+                href={`mailto:${restaurant.details.contactEmail}`}
+                className="fw-bold"
+              >
                 {restaurant.details.contactEmail}
               </a>
-            </strong>
-          </Card.Text>
+            </Col>
+          </Row>
         </Card.Body>
       </Card>
     </Container>
