@@ -109,7 +109,7 @@ const BookTable: React.FC<BookTableProps> = ({
     <Container className="mt-4 fade-in">
       {isSuccess ? (
         <div className="my-4">
-          <Card className="p-2 border bg-light">
+          <Card className="border bg-light">
             <Card.Body>
               <Card.Title as="h5">
                 Thank You for Booking at {restaurantName}!
@@ -144,7 +144,7 @@ const BookTable: React.FC<BookTableProps> = ({
           </Card>
         </div>
       ) : (
-        <Form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
+        <Form onSubmit={handleSubmit} className="p-3 border rounded bg-light">
           <h3 className="mb-4 h5">Book a Table at {restaurantName}</h3>
 
           {errors.length > 0 && (
