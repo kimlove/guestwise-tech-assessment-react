@@ -7,6 +7,7 @@ import { RestaurantDetails } from "./components/RestaurantDetails";
 import BookTable from "./components/BookTable";
 import { getRestaurants } from "./services/api";
 import { Restaurant } from "./types/restaurants";
+import { Loading } from "./components/Loading";
 
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[] | null>(null);
@@ -14,22 +15,21 @@ function App() {
     number | null
   >(null);
 
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      const data = await getRestaurants();
+  const fetchRestaurants = async () => {
+    const data = await getRestaurants();
+    if (data) {
+      setRestaurants(data);
+    } else {
+      console.error("Failed to fetch restaurants");
+    }
+  };
 
-      if (data) {
-        setRestaurants(data);
-      } else {
-        console.error("Failed to fetch restaurants");
-      }
-    };
+  useEffect(() => {
     fetchRestaurants();
   }, []);
 
   if (!restaurants) {
-    // stub loading a basic state for now
-    return <div>Loading...</div>;
+    return <Loading onRetry={fetchRestaurants} />;
   }
 
   // Find the selected restaurant based on the selected id otherwise set it to null

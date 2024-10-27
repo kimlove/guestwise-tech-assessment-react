@@ -11,7 +11,7 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   restaurant,
 }) => {
   return (
-    <Container>
+    <Container className="fade-in">
       <Card>
         <Card.Body>
           <Card.Title>{restaurant.name}</Card.Title>

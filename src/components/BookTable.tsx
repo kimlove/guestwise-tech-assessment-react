@@ -76,7 +76,7 @@ const BookTable: React.FC = ({}) => {
   };
 
   return (
-    <Container>
+    <Container className="fade-in">
       <h2>Book a Table</h2>
       {errors.length > 0 ? (
         <ul>
