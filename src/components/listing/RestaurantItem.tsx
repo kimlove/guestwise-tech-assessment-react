@@ -16,7 +16,10 @@ export const RestaurantItem: React.FC<RestaurantItemProps> = ({
   return (
     <ListGroup.Item action onClick={onSelect}>
       <div className="d-flex align-items-start justify-content-between">
-        <h5 style={isSelected ? { fontWeight: "bold" } : undefined}>
+        <h5
+          style={isSelected ? { fontWeight: "bold" } : undefined}
+          className="h6"
+        >
           {restaurant.name}
         </h5>
         <div className="d-flex gap-1 align-items-center small text-muted">
@@ -31,7 +34,7 @@ export const RestaurantItem: React.FC<RestaurantItemProps> = ({
           </svg>
         </div>
       </div>
-      <p>{restaurant.shortDescription}</p>
+      <p className="m-0 small text-muted">{restaurant.shortDescription}</p>
     </ListGroup.Item>
   );
 };
