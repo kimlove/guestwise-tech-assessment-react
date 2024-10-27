@@ -43,6 +43,7 @@ function App() {
           <RestaurantList
             onRestaurantSelect={setSelectedRestaurantId}
             restaurants={restaurants}
+            selectedRestaurantId={selectedRestaurantId}
           />
         </Col>
         <Col md={8}>

@@ -10,11 +10,13 @@ type Restaurant = {
 type RestaurantListProps = {
   restaurants: Restaurant[];
   onRestaurantSelect: (id: number) => void;
+  selectedRestaurantId: number | null;
 };
 
 const RestaurantList: React.FC<RestaurantListProps> = ({
   restaurants,
   onRestaurantSelect,
+  selectedRestaurantId,
 }) => {
   return (
     <Container>
@@ -26,7 +28,15 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
             action
             onClick={() => onRestaurantSelect(restaurant.id)}
           >
-            <h5>{restaurant.name}</h5>
+            <h5
+              style={
+                restaurant.id === selectedRestaurantId
+                  ? { fontWeight: "bold" }
+                  : undefined
+              }
+            >
+              {restaurant.name}
+            </h5>
             <p>{restaurant.shortDescription}</p>
           </ListGroup.Item>
         ))}
