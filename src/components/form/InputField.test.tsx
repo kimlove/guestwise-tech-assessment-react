@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { InputField } from "./inputField";
+import { InputField } from "./InputField";
 
 jest.spyOn(console, "error").mockImplementation((message) => {
   if (message.includes("ReactDOMTestUtils.act is deprecated")) {

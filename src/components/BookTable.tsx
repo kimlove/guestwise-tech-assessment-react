@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Alert, Card } from "react-bootstrap";
-import { InputField } from "./form/inputField";
+import { InputField } from "./form/InputField";
 import { validateBookingData } from "../lib/validateBookingData";
 import { BookingForm } from "../types/forms";
-import { SelectField } from "./form/selectField";
+import { SelectField } from "./form/SelectField";
 
 type BookTableProps = {
   restaurantId: number;
