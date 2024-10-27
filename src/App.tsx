@@ -39,15 +39,20 @@ function App() {
 
   return (
     <Container>
+      <Row className="header-gradient text-center p-3 m-3 mb-0 rounded">
+        <Col>
+          <h1 className="h4 mb-0">Amazing Restaurant Finder</h1>
+        </Col>
+      </Row>
       <Row>
-        <Col md={4}>
+        <Col lg={4}>
           <RestaurantList
             onRestaurantSelect={setSelectedRestaurantId}
             restaurants={restaurants}
             selectedRestaurantId={selectedRestaurantId}
           />
         </Col>
-        <Col md={8}>
+        <Col lg={8}>
           {selectedRestaurant ? (
             <>
               <RestaurantDetails restaurant={selectedRestaurant} />

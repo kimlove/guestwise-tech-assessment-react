@@ -11,8 +11,8 @@ export const SortOptions: React.FC<SortOptionsProps> = ({
   onSortChange,
 }) => {
   return (
-    <div className="d-flex align-items-center gap-1 mb-2">
-      Sort By:
+    <div className="d-flex align-items-center gap-1 mb-2 small">
+      Sort&nbsp;By:
       {["default", "name", "rating"].map((type) => (
         <Button
           key={type}

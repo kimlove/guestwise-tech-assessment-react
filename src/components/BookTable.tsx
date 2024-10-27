@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Form, Alert } from "react-bootstrap";
 import { InputField } from "./form/inputField";
 import { validateBookingData } from "../lib/validateBookingData";
 import { BookingForm } from "../types/forms";
@@ -99,8 +99,6 @@ const BookTable: React.FC<BookTableProps> = ({
 
   return (
     <Container className="mt-4 fade-in">
-      <h2>Book a Table</h2>
-
       {isSuccess ? (
         <div>
           <p>
@@ -128,46 +126,50 @@ const BookTable: React.FC<BookTableProps> = ({
           </Button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
+          <h3 className="mb-4">Book a Table at {restaurantName}</h3>
+
           {errors.length > 0 && (
-            <ul>
-              {errors.map((error) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
+            <Alert variant="danger">
+              <ul className="mb-0">
+                {errors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            </Alert>
           )}
-          <ul className="list-unstyled">
-            {formFields.map((field) => (
-              <li key={field.name}>
-                {field.name === "guests" ? (
-                  <SelectField
-                    label={field.label}
-                    name="guests"
-                    min={1}
-                    max={12}
-                    value={formData.guests}
-                    required={field.required}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  <InputField
-                    label={field.label}
-                    name={field.name}
-                    type={field.type}
-                    required={field.required}
-                    value={formData[field.name]}
-                    onChange={handleChange}
-                  />
-                )}
-              </li>
-            ))}
-            <li>
-              <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Booking..." : `Book at ${restaurantName}`}
-              </button>
-            </li>
-          </ul>
-        </form>
+
+          {formFields.map((field) => (
+            <Form.Group key={field.name} className="mb-3">
+              {field.name === "guests" ? (
+                <SelectField
+                  label={field.label}
+                  name="guests"
+                  min={1}
+                  max={12}
+                  value={formData.guests}
+                  required={field.required}
+                  onChange={handleChange}
+                />
+              ) : (
+                <InputField
+                  label={field.label}
+                  name={field.name}
+                  type={field.type}
+                  required={field.required}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                />
+              )}
+            </Form.Group>
+          ))}
+
+          <div className="d-grid">
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
+              {isSubmitting ? "Booking..." : `Book at ${restaurantName}`}
+            </Button>
+          </div>
+        </Form>
       )}
     </Container>
   );

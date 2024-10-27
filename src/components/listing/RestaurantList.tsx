@@ -44,9 +44,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
   });
 
   return (
-    <Container className="fade-in">
-      <h2>Restaurants</h2>
-
+    <Container className="mt-4 fade-in">
       <SearchBar search={search} onSearchChange={setSearch} />
       <SortOptions sortBy={sortBy} onSortChange={setSortBy} />
 

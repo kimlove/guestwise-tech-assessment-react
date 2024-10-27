@@ -22,7 +22,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     <InputGroup className="mb-1">
       <FormControl
         type="text"
-        placeholder="Search..."
+        placeholder="Restaurant search..."
         value={search}
         onChange={handleSearch}
       />

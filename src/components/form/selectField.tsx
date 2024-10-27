@@ -1,4 +1,5 @@
 import React from "react";
+import { Form } from "react-bootstrap";
 
 type SelectFieldProps = {
   label: string;
@@ -20,9 +21,27 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   onChange,
 }) => {
   return (
-    <label>
-      {label}
-      <select name={name} value={value} required={required} onChange={onChange}>
+    <Form.Group className="d-flex align-items-center mb-3">
+      <Form.Label
+        htmlFor={name}
+        className="me-3 mb-0"
+        style={{ width: "120px" }}
+      >
+        {label}
+      </Form.Label>
+      <Form.Control
+        as="select"
+        name={name}
+        id={name}
+        value={value}
+        required={required}
+        // The type assertion is necessary because the event type is not inferred correctly -- use this for now
+        onChange={(event) =>
+          onChange(event as unknown as React.ChangeEvent<HTMLSelectElement>)
+        }
+        style={{ width: "200px" }}
+        className="w-100 w-md-auto"
+      >
         {[...Array(max - min + 1)].map((_, index) => {
           const optionValue = min + index;
           return (
@@ -31,7 +50,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             </option>
           );
         })}
-      </select>
-    </label>
+      </Form.Control>
+    </Form.Group>
   );
 };
