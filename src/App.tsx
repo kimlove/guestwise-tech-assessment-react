@@ -51,7 +51,11 @@ function App() {
           {selectedRestaurant ? (
             <>
               <RestaurantDetails restaurant={selectedRestaurant} />
-              <BookTable />
+              <BookTable
+                restaurantId={selectedRestaurant.id}
+                restaurantName={selectedRestaurant.name}
+                restaurantEmail={selectedRestaurant.details.contactEmail}
+              />
             </>
           ) : null}
         </Col>

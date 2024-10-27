@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { InputField } from "./form/inputField";
 import { validateBookingData } from "../lib/validateBookingData";
 import { BookingForm } from "../types/forms";
 import { SelectField } from "./form/selectField";
 
-// array of form fields we can map over
+type BookTableProps = {
+  restaurantId: number;
+  restaurantName: string;
+  restaurantEmail: string;
+};
+
 const formFields: {
   label: string;
   name: keyof BookingForm;
@@ -20,7 +25,7 @@ const formFields: {
   { label: "Guests", name: "guests", type: "number", required: true },
 ];
 
-const defaultFormData = {
+const defaultFormData: BookingForm = {
   name: "",
   email: "",
   phone: "",
@@ -29,14 +34,19 @@ const defaultFormData = {
   guests: 1,
 };
 
-const BookTable: React.FC = ({}) => {
+const BookTable: React.FC<BookTableProps> = ({
+  restaurantId,
+  restaurantName,
+  restaurantEmail,
+}) => {
   const [formData, setFormData] = useState<BookingForm>(defaultFormData);
   const [errors, setErrors] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    // reset errors if there are any
     if (errors.length > 0) {
       setErrors([]);
     }
@@ -49,10 +59,12 @@ const BookTable: React.FC = ({}) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const { isValid, errors } = validateBookingData(formData);
     if (!isValid) {
       setErrors(errors);
+      setIsSubmitting(false);
       return;
     }
 
@@ -62,37 +74,72 @@ const BookTable: React.FC = ({}) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          restaurantId,
+          restaurantName,
+          ...formData,
+        }),
       });
 
       if (!response.ok) throw new Error("Booking failed");
 
-      console.log("Booking successful");
+      setIsSuccess(true); // Show success message
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
-      console.log("Completed request");
+      setIsSubmitting(false);
     }
   };
 
+  const resetForm = () => {
+    setFormData(defaultFormData);
+    setErrors([]);
+    setIsSuccess(false);
+  };
+
   return (
-    <Container className="fade-in">
+    <Container className="mt-4 fade-in">
       <h2>Book a Table</h2>
-      {errors.length > 0 ? (
-        <ul>
-          {errors.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      ) : null}
-      <form onSubmit={handleSubmit}>
-        <ul className="list-unstyled">
-          {formFields.map(
-            (
-              field // map over formFields array
-            ) => (
+
+      {isSuccess ? (
+        <div>
+          <p>
+            Thank you for booking at <strong>{restaurantName}!</strong>
+          </p>
+          <h5>Your Booking Details</h5>
+          <ul className="list-unstyled p-2 px-3 border d-inline-block">
+            {Object.entries(formData).map(([key, value]) => (
+              <li key={key}>
+                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
+                {value}
+              </li>
+            ))}
+          </ul>
+
+          <p>
+            If you would like to amend or update your booking, please email{" "}
+            <strong>
+              <a href={`mailto:{restaurantEmail}`}>{restaurantEmail}</a>
+            </strong>
+          </p>
+
+          <Button variant="primary" onClick={resetForm}>
+            Book Again
+          </Button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          {errors.length > 0 && (
+            <ul>
+              {errors.map((error) => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          )}
+          <ul className="list-unstyled">
+            {formFields.map((field) => (
               <li key={field.name}>
-                {field.name === "guests" ? ( // as we have a defined min / max for guests, drop in a select menu
+                {field.name === "guests" ? (
                   <SelectField
                     label={field.label}
                     name="guests"
@@ -113,14 +160,15 @@ const BookTable: React.FC = ({}) => {
                   />
                 )}
               </li>
-            )
-          )}
-
-          <li>
-            <button type="submit">Book</button>
-          </li>
-        </ul>
-      </form>
+            ))}
+            <li>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Booking..." : `Book at ${restaurantName}`}
+              </button>
+            </li>
+          </ul>
+        </form>
+      )}
     </Container>
   );
 };
