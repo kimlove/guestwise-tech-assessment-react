@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { InputField } from "./form/inputField";
+import { validateBookingData } from "../lib/validateBookingData";
+import { BookingForm } from "../types/forms";
+import { SelectField } from "./form/selectField";
 
 // array of form fields we can map over
 const formFields: {
   label: string;
-  name: keyof FormData;
+  name: keyof BookingForm;
   type: string;
   required: boolean;
 }[] = [
@@ -23,15 +26,21 @@ const defaultFormData = {
   phone: "",
   date: "",
   time: "",
-  guests: 0,
+  guests: 1,
 };
 
-type FormData = typeof defaultFormData;
-
 const BookTable: React.FC = ({}) => {
-  const [formData, setFormData] = useState<FormData>(defaultFormData);
+  const [formData, setFormData] = useState<BookingForm>(defaultFormData);
+  const [errors, setErrors] = useState<string[]>([]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    // reset errors if there are any
+    if (errors.length > 0) {
+      setErrors([]);
+    }
+
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
@@ -40,6 +49,13 @@ const BookTable: React.FC = ({}) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    const { isValid, errors } = validateBookingData(formData);
+    if (!isValid) {
+      setErrors(errors);
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/bookings", {
         method: "POST",
@@ -62,6 +78,13 @@ const BookTable: React.FC = ({}) => {
   return (
     <Container>
       <h2>Book a Table</h2>
+      {errors.length > 0 ? (
+        <ul>
+          {errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      ) : null}
       <form onSubmit={handleSubmit}>
         <ul className="list-unstyled">
           {formFields.map(
@@ -69,14 +92,26 @@ const BookTable: React.FC = ({}) => {
               field // map over formFields array
             ) => (
               <li key={field.name}>
-                <InputField
-                  label={field.label}
-                  name={field.name}
-                  type={field.type}
-                  required={field.required}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                />
+                {field.name === "guests" ? ( // as we have a defined min / max for guests, drop in a select menu
+                  <SelectField
+                    label={field.label}
+                    name="guests"
+                    min={1}
+                    max={12}
+                    value={formData.guests}
+                    required={field.required}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  <InputField
+                    label={field.label}
+                    name={field.name}
+                    type={field.type}
+                    required={field.required}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                  />
+                )}
               </li>
             )
           )}
