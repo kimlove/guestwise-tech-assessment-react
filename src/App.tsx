@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Col, Container, Row } from "react-bootstrap";
-import RestaurantList from "./components/RestaurantList";
+import RestaurantList from "./components/listing/RestaurantList";
 import { RestaurantDetails } from "./components/RestaurantDetails";
 import BookTable from "./components/BookTable";
 import { getRestaurants } from "./services/api";
