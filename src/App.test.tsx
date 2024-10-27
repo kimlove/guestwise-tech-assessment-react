@@ -1,10 +1,28 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
+import { getRestaurants } from "./services/api";
+
+jest.mock("./services/api", () => ({
+  getRestaurants: jest.fn(),
+}));
+
+const mockedGetRestaurants = getRestaurants as jest.MockedFunction<
+  typeof getRestaurants
+>;
 
 test("renders restaurant list with dynamic restaurant name and description", async () => {
+  mockedGetRestaurants.mockResolvedValue([
+    {
+      id: 1,
+      name: "Velvet & Vine",
+      shortDescription: "A fine dining experience with a modern twist.",
+    },
+  ]);
+
   render(<App />);
 
-  // Wait for the restaurant list to load before checking the restaurant name and description
+  expect(mockedGetRestaurants).toHaveBeenCalled();
+
   const restaurantName = await screen.findByRole("heading", {
     level: 5,
     name: /Velvet & Vine/i,
