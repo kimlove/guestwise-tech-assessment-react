@@ -1,5 +1,28 @@
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/1de0151b-8aa1-4570-b49d-1ffb6c37e13b">
 
+# Kim Love notes:
+
+- Git commit messages follow the [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716) guidelines.
+- Most of the core functionality outlined in this ReadMe is implemented.
+- Super barebones UI; I’ve used Bootstrap components where possible with minimal custom CSS.
+- No additional npm packages used.
+- Ignores cases where there are over 12 guests (i.e. "Please contact the restaurant directly for larger bookings"), but limits guest selection from 1 to 12 using a select menu.
+- Booking silently fails if the API service is down
+
+## Future improvements (with time estimation)
+
+- Filter by cuisine type would be nice (1 hour)
+- Restaurant images would be nice to have (need image restaurant content + 1-2 hours)
+- Currently, the system does not prevent bookings during closed hours or distinguish between weekday/weekend times. Adding this feature could improve user experience. (3-5 hours)
+- The vertical list doesn’t scale too well, especially if more restaurants were added. To improve usability, I’d consider splitting the list by cuisine type or location and allowing users to drill down. Would likely require an additional index page. (4 hours)
+- The Bootstrap UI is pretty dated. I'd probably replace with Tailwind and a more modern component library https://ui.shadcn.com/ - or look at a bespoke design implementation (4-8 hours... likely longer if bespoke)
+- Unit tests are quite basic, so may need to cover more edge cases especially around booking form submission (4 hours)
+- Hardcoded text in the current unit test make them quite brittle, reusing API data would be nicer.
+- Improved calendar selector where previous dates were unavailable (and could incorporate a better time check if today was selected) (4 hours)
+- The app obv. has no awareness of previous bookings. This feature would require a more sophisticated API/backend integration.
+
+---
+
 # Guestwise React Technical Assessment
 
 ## Technical Test Brief
