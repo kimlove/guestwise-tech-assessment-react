@@ -3,6 +3,33 @@
   color: white;
 }
 
+.responsive-list {
+  max-height: 300px;
+  padding-right: 0.5em;
+  overflow-y: auto;
+}
+
+@media (min-width: 991px) {
+  .responsive-list {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  }
+}
+
+.responsive-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.responsive-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.responsive-list::-webkit-scrollbar-thumb {
+  background-color: #452f67;
+  border-radius: 4px;
+  border: 2px solid #f1f1f1;
+}
+
 .fade-in {
   animation: fadeIn 0.5s ease forwards;
 }

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Button, Form, Alert } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Button, Form, Alert, Card } from "react-bootstrap";
 import { InputField } from "./form/inputField";
 import { validateBookingData } from "../lib/validateBookingData";
 import { BookingForm } from "../types/forms";
@@ -43,6 +43,14 @@ const BookTable: React.FC<BookTableProps> = ({
   const [errors, setErrors] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // if the restaurantId changes, reset state
+  useEffect(() => {
+    setFormData(defaultFormData);
+    setErrors([]);
+    setIsSubmitting(false);
+    setIsSuccess(false);
+  }, [restaurantId]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -100,30 +108,40 @@ const BookTable: React.FC<BookTableProps> = ({
   return (
     <Container className="mt-4 fade-in">
       {isSuccess ? (
-        <div>
-          <p>
-            Thank you for booking at <strong>{restaurantName}!</strong>
-          </p>
-          <h5>Your Booking Details</h5>
-          <ul className="list-unstyled p-2 px-3 border d-inline-block">
-            {Object.entries(formData).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
-                {value}
-              </li>
-            ))}
-          </ul>
+        <div className="my-4">
+          <Card className="p-2 border bg-light">
+            <Card.Body>
+              <Card.Title as="h5">
+                Thank You for Booking at {restaurantName}!
+              </Card.Title>
+              <Card.Text>Your Booking Details:</Card.Text>
 
-          <p>
-            If you would like to amend or update your booking, please email{" "}
-            <strong>
-              <a href={`mailto:{restaurantEmail}`}>{restaurantEmail}</a>
-            </strong>
-          </p>
+              <ul className="list-unstyled mb-4 p-3 bg-white rounded border">
+                {Object.entries(formData).map(([key, value]) => (
+                  <li key={key} className="mb-2">
+                    <strong>
+                      {key.charAt(0).toUpperCase() + key.slice(1)}:
+                    </strong>{" "}
+                    {value}
+                  </li>
+                ))}
+              </ul>
 
-          <Button variant="primary" onClick={resetForm}>
-            Book Again
-          </Button>
+              <Card.Text className="mb-4">
+                If you would like to amend or update your booking, please email{" "}
+                <a
+                  href={`mailto:${restaurantEmail}`}
+                  className="text-primary fw-bold"
+                >
+                  {restaurantEmail}
+                </a>
+              </Card.Text>
+
+              <Button variant="primary" onClick={resetForm}>
+                Book Again
+              </Button>
+            </Card.Body>
+          </Card>
         </div>
       ) : (
         <Form onSubmit={handleSubmit} className="p-4 border rounded bg-light">

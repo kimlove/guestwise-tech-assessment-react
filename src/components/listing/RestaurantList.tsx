@@ -58,7 +58,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
           </div>
         </div>
       ) : (
-        <ListGroup>
+        <ListGroup className="responsive-list">
           {sortedRestaurants.map((restaurant) => (
             <RestaurantItem
               key={restaurant.id}
