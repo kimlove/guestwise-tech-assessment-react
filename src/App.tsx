@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Button } from "react-bootstrap";
 import RestaurantList from "./components/listing/RestaurantList";
 import { RestaurantDetails } from "./components/RestaurantDetails";
 import BookTable from "./components/BookTable";
@@ -28,11 +28,18 @@ function App() {
     fetchRestaurants();
   }, []);
 
+  // If the restaurants are still loading, show the loading component
   if (!restaurants) {
     return <Loading onRetry={fetchRestaurants} />;
   }
 
-  // Find the selected restaurant based on the selected id otherwise set it to null
+  const selectRandomRestaurant = () => {
+    if (restaurants.length > 0) {
+      const randomIndex = Math.floor(Math.random() * restaurants.length);
+      setSelectedRestaurantId(restaurants[randomIndex].id);
+    }
+  };
+
   const selectedRestaurant = selectedRestaurantId
     ? restaurants.find((restaurant) => restaurant.id === selectedRestaurantId)
     : null;
@@ -62,7 +69,17 @@ function App() {
                 restaurantEmail={selectedRestaurant.details.contactEmail}
               />
             </>
-          ) : null}
+          ) : (
+            <div
+              className="d-flex flex-column align-items-center justify-content-center text-center mt-4"
+              style={{ height: "50vh" }}
+            >
+              <h5 className="mb-3">Select a restaurant to view details</h5>
+              <Button variant="primary" onClick={selectRandomRestaurant}>
+                Surprise Me!
+              </Button>
+            </div>
+          )}
         </Col>
       </Row>
     </Container>
