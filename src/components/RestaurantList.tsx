@@ -21,6 +21,9 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
   selectedRestaurantId,
 }) => {
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState<"default" | "name" | "rating">(
+    "default"
+  );
 
   const searchQueryHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -30,6 +33,10 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
     setSearch("");
   };
 
+  const sortHandler = (sortType: "default" | "name" | "rating") => {
+    setSortBy(sortType);
+  };
+
   // search restaurants based on the search input and check name and shortDescription
   const filteredRestaurants = restaurants.filter((restaurant) =>
     `${restaurant.name} ${restaurant.shortDescription}`
@@ -37,11 +44,22 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
       .includes(search.toLowerCase())
   );
 
+  // Sort restaurants based on the selected sort option
+  const sortedRestaurants = [...filteredRestaurants].sort((a, b) => {
+    if (sortBy === "name") {
+      return a.name.localeCompare(b.name);
+    }
+    if (sortBy === "rating") {
+      return b.rating - a.rating;
+    }
+    return 0; // "default" keeps the original order
+  });
+
   return (
     <Container>
       <h2>Restaurants</h2>
 
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-1">
         <FormControl
           type="text"
           placeholder="Search..."
@@ -55,7 +73,32 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
         )}
       </InputGroup>
 
-      {filteredRestaurants.length === 0 ? (
+      <div className="d-flex align-items-center gap-1 mb-2">
+        Sort By:
+        <Button
+          variant="link"
+          onClick={() => sortHandler("default")}
+          active={sortBy === "default"}
+        >
+          Default
+        </Button>
+        <Button
+          variant="link"
+          onClick={() => sortHandler("name")}
+          active={sortBy === "name"}
+        >
+          Name
+        </Button>
+        <Button
+          variant="link"
+          onClick={() => sortHandler("rating")}
+          active={sortBy === "rating"}
+        >
+          Rating
+        </Button>
+      </div>
+
+      {sortedRestaurants.length === 0 ? (
         <div className="text-center">
           <p>Sorry, no restaurants found</p>
           <div>
@@ -66,7 +109,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
         </div>
       ) : (
         <ListGroup>
-          {filteredRestaurants.map((restaurant) => (
+          {sortedRestaurants.map((restaurant) => (
             <ListGroup.Item
               key={restaurant.id}
               action
