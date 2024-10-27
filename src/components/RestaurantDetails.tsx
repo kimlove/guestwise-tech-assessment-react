@@ -31,6 +31,13 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
 
           <Row className="mb-2">
             <Col xs={4} className="text-muted">
+              Cuisine:
+            </Col>
+            <Col xs={8}>{restaurant.cuisine}</Col>
+          </Row>
+
+          <Row className="mb-2">
+            <Col xs={4} className="text-muted">
               Opening Hours:
             </Col>
             <Col xs={8}>
