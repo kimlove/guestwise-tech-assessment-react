@@ -1,48 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, Container } from "react-bootstrap";
-import { getRestaurantDetails } from "../services/api";
 
+// we'll move this into a shared types file later
 type RestaurantDetailsProps = {
-  restaurantId: number;
-};
-
-type RestaurantDetailsData = {
-  address: string;
-  openingHours: {
-    weekday: string;
-    weekend: string;
+  restaurant: {
+    details: {
+      address: string;
+      openingHours: {
+        weekday: string;
+        weekend: string;
+      };
+      reviewScore: number;
+      contactEmail: string;
+    };
   };
-  reviewScore: number;
-  contactEmail: string;
 };
 
-const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
-  restaurantId,
+// Let's pass the restaurant details directly into this component rather than fetching them from the API based on the selected id prop
+export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
+  restaurant,
 }) => {
-  if (!restaurantId) return null;
-
-  const details = {
-    address: "123 Fine St, London",
-    openingHours: {
-      weekday: "12:00 PM - 10:00 PM",
-      weekend: "11:00 AM - 11:00 PM",
-    },
-    reviewScore: 4.7,
-    contactEmail: "info@velvetandvine.co.uk",
-  };
-
   return (
     <Container>
       <Card>
         <Card.Body>
           <Card.Title>Restaurant Details</Card.Title>
-          <Card.Text>Address: {details.address}</Card.Text>
-          <Card.Text>Review Score: {details.reviewScore}</Card.Text>
-          <Card.Text>Contact: {details.contactEmail}</Card.Text>
+          <Card.Text>Address: {restaurant.details.address}</Card.Text>
+          <Card.Text>Review Score: {restaurant.details.reviewScore}</Card.Text>
+          <Card.Text>Contact: {restaurant.details.contactEmail}</Card.Text>
         </Card.Body>
       </Card>
     </Container>
   );
 };
-
-export default RestaurantDetails;
