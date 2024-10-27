@@ -6,9 +6,10 @@ import RestaurantList from "./components/RestaurantList";
 import { RestaurantDetails } from "./components/RestaurantDetails";
 import BookTable from "./components/BookTable";
 import { getRestaurants } from "./services/api";
+import { Restaurant } from "./types/restaurants";
 
 function App() {
-  const [restaurants, setRestaurants] = useState<any[] | null>(null);
+  const [restaurants, setRestaurants] = useState<Restaurant[] | null>(null);
   const [selectedRestaurantId, setSelectedRestaurantId] = useState<
     number | null
   >(null);
